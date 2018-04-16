@@ -1,2 +1,1 @@
-# iTrust2-v2
-ITrust System for CSC_519
+# iTrust2-v2.5
