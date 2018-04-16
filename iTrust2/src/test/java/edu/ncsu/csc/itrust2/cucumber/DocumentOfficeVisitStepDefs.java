@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-import java.util.logging.Level;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -34,10 +33,6 @@ import edu.ncsu.csc.itrust2.models.persistent.Patient;
 import edu.ncsu.csc.itrust2.models.persistent.User;
 
 public class DocumentOfficeVisitStepDefs {
-
-    static {
-        java.util.logging.Logger.getLogger( "com.gargoylesoftware" ).setLevel( Level.OFF );
-    }
 
     private final WebDriver driver       = new HtmlUnitDriver( true );
     private final String    baseUrl      = "http://localhost:8080/iTrust2";

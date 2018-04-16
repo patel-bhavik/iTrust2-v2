@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.logging.Level;
 
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -33,11 +32,6 @@ import edu.ncsu.csc.itrust2.models.persistent.User;
 import edu.ncsu.csc.itrust2.utils.HibernateDataGenerator;
 
 public class PasswordChangeStepDefs {
-
-    static {
-        java.util.logging.Logger.getLogger( "com.gargoylesoftware" ).setLevel( Level.OFF );
-    }
-
     private WebDriver          driver;
     private final String       baseUrl = "http://localhost:8080/iTrust2";
 
@@ -47,7 +41,6 @@ public class PasswordChangeStepDefs {
 
     @Before
     public void setup () {
-
         driver = new HtmlUnitDriver( true );
         wait = new WebDriverWait( driver, 5 );
 
@@ -110,7 +103,6 @@ public class PasswordChangeStepDefs {
     @Then ( "My password is updated sucessfully" )
     public void verifyUpdate () {
         try {
-            Thread.sleep( 5000 );
             wait.until( ExpectedConditions.textToBePresentInElementLocated( By.name( "message" ),
                     "Password changed successfully" ) );
         }
@@ -127,8 +119,8 @@ public class PasswordChangeStepDefs {
             wait.until( ExpectedConditions.textToBePresentInElementLocated( By.name( "message" ), message ) );
         }
         catch ( final Exception e ) {
-            fail( driver.findElement( By.name( "message" ) ).getText() + "\n"
-                    + ( null == token ? "" : ( token.getId() + "\n" + token.getTempPasswordPlaintext() ) ) );
+            fail( driver.findElement( By.name( "message" ) ).getText() + "\n" + token.getId() + "\n"
+                    + token.getTempPasswordPlaintext() );
         }
     }
 
@@ -138,7 +130,7 @@ public class PasswordChangeStepDefs {
         final User user = User.getByName( username );
         switch ( user.getRole() ) {
             case ROLE_PATIENT:
-                Patient dbPatient = Patient.getByName( username );
+                Patient dbPatient = Patient.getPatient( username );
                 if ( null == dbPatient ) {
                     dbPatient = new Patient();
                 }
@@ -244,15 +236,7 @@ public class PasswordChangeStepDefs {
 
     @Given ( "The user (.+) does not exist in the system" )
     public void noUser ( final String username ) {
-        final User user = User.getByName( username );
-        if ( null != user ) {
-            try {
-                user.delete();
-            }
-            catch ( final Exception e ) {
-                ;
-            }
-        }
+        // we can safely assume this user was never created
     }
 
     @Then ( "I see an error message on the password page" )
@@ -306,7 +290,7 @@ public class PasswordChangeStepDefs {
 
             // create the folder object and open it
             final Folder emailFolder = store.getFolder( "INBOX" );
-            emailFolder.open( Folder.READ_ONLY );
+            emailFolder.open( Folder.READ_WRITE );
 
             // retrieve the messages from the folder in an array and print it
             final Message[] messages = emailFolder.getMessages();

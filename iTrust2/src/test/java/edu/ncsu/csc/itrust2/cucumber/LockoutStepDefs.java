@@ -13,13 +13,12 @@ import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import edu.ncsu.csc.itrust2.models.persistent.DomainObject;
-import edu.ncsu.csc.itrust2.models.persistent.LoginAttempt;
 import edu.ncsu.csc.itrust2.models.persistent.LoginBan;
+import edu.ncsu.csc.itrust2.models.persistent.DomainObject;
 import edu.ncsu.csc.itrust2.models.persistent.LoginLockout;
+import edu.ncsu.csc.itrust2.models.persistent.LoginAttempt;
 
 public class LockoutStepDefs {
-
     private final WebDriver driver  = new HtmlUnitDriver( true );
     private final String    baseUrl = "http://localhost:8080/iTrust2";
     WebDriverWait           wait    = new WebDriverWait( driver, 2 );
@@ -121,12 +120,12 @@ public class LockoutStepDefs {
         /*
          * While generally bad practice to access the DB/backend in a black box
          * test, this simulates waiting 1 hour by moving the timestamp for all
-         * LoginLockout entries back 61 minutes. This is significantly faster
-         * than waiting one hour for the tests to run, easier and less dangerous
-         * than moving the system time forward, and maintains security of the
-         * system by not requiring exposing endpoints to manipulate the status
-         * of locked out and banned users or IPs (Since shifting a lockout
-         * should never be a real operation).
+         * LoginLockout entries back 61 minutes. This is significantly faster than
+         * waiting one hour for the tests to run, easier and less dangerous than
+         * moving the system time forward, and maintains security of the system
+         * by not requiring exposing endpoints to manipulate the status of
+         * locked out and banned users or IPs (Since shifting a lockout should
+         * never be a real operation).
          */
         LoginLockout.getLockouts().stream().forEach( x -> {
             final LoginLockout a = x;

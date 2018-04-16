@@ -32,7 +32,6 @@ import edu.ncsu.csc.itrust2.models.persistent.Patient;
 import edu.ncsu.csc.itrust2.models.persistent.User;
 
 public class DiagnosesStepDefs {
-
     private static boolean initialized = false;
 
     private WebDriver      driver;
@@ -42,7 +41,6 @@ public class DiagnosesStepDefs {
 
     @Before
     public void setup () {
-
         driver = new HtmlUnitDriver( true );
         wait = new WebDriverWait( driver, 5 );
     }

@@ -75,7 +75,7 @@ public class APIPatientController extends APIController {
      */
     @GetMapping ( BASE_PATH + "/patients/{username}" )
     public ResponseEntity getPatient ( @PathVariable ( "username" ) final String username ) {
-        final Patient patient = Patient.getByName( username );
+        final Patient patient = Patient.getPatient( username );
         if ( patient == null ) {
             return new ResponseEntity( errorResponse( "No Patient found for username " + username ),
                     HttpStatus.NOT_FOUND );
@@ -153,7 +153,7 @@ public class APIPatientController extends APIController {
                         errorResponse( "The ID provided does not match the ID of the Patient provided" ),
                         HttpStatus.CONFLICT );
             }
-            final Patient dbPatient = Patient.getByName( id );
+            final Patient dbPatient = Patient.getPatient( id );
             if ( null == dbPatient ) {
                 return new ResponseEntity( errorResponse( "No Patient found for id " + id ), HttpStatus.NOT_FOUND );
             }

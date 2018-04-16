@@ -40,7 +40,6 @@ public class PrescriptionsStepDefs {
         d.setName( "Quetiane Fumarate" );
         d.setDescription( "atypical antipsychotic and antidepressant" );
         d.save();
-
     }
 
     private String getUserName ( final String first, final String last ) {
@@ -157,13 +156,7 @@ public class PrescriptionsStepDefs {
     }
 
     @When ( "submit the values for NDC (.+), name (.+), and description (.*)" )
-    public void submitDrug ( final String ndc, final String name, final String description )
-            throws InterruptedException {
-        // Piazza post 381
-        wait.until( ExpectedConditions.visibilityOfElementLocated( By.tagName( "h3" ) ) );
-        assertEquals( "Admin Manage Drugs", driver.findElement( By.tagName( "h3" ) ).getText() );
-
-        Thread.sleep( 1000 );
+    public void submitDrug ( final String ndc, final String name, final String description ) {
         enterValue( "drug", name );
         enterValue( "code", ndc );
         enterValue( "description", description );
@@ -171,9 +164,7 @@ public class PrescriptionsStepDefs {
     }
 
     @Then ( "the drug (.+) is successfully added to the system" )
-    public void drugSuccessful ( final String drug ) throws InterruptedException {
-        Thread.sleep( 2000 );
-
+    public void drugSuccessful ( final String drug ) {
         wait.until( ExpectedConditions.textToBePresentInElementLocated( By.tagName( "body" ), drug ) );
         assertEquals( "", driver.findElement( By.id( "errP" ) ).getText() );
 

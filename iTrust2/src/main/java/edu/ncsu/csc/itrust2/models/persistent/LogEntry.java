@@ -1,9 +1,7 @@
 package edu.ncsu.csc.itrust2.models.persistent;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +14,6 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 
 import edu.ncsu.csc.itrust2.models.enums.TransactionType;
-import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
 /**
  * Class that represents a LogEntry that is created in response to certain user
@@ -93,35 +90,6 @@ public class LogEntry extends DomainObject<LogEntry> {
             return null;
         }
 
-    }
-
-    /**
-     * Retrieves a LogEntry list within the date range startDate and endDate is
-     * parsed by APILogEntry
-     *
-     * @param startDate
-     *            The start date of the time range
-     * @param endDate
-     *            The end date of the time range
-     *
-     * @return LogEntries within date range
-     */
-
-    public static List<LogEntry> getByDateRange ( final Date startDate, final Date endDate ) {
-        final Calendar start = Calendar.getInstance();
-        start.setTime( startDate );
-        final Calendar end = Calendar.getInstance();
-        end.setTime( endDate );
-        end.add( Calendar.DAY_OF_MONTH, 1 ); // to make inclusive
-
-        final String user = LoggerUtil.currentUser();
-
-        final List<Criterion> search = new Vector<Criterion>();
-        search.add( createBetween( "time", start, end ) );
-        search.add(
-                Restrictions.or( createCriterion( "primaryUser", user ), createCriterion( "secondaryUser", user ) ) );
-
-        return getWhere( search );
     }
 
     /**
@@ -288,5 +256,4 @@ public class LogEntry extends DomainObject<LogEntry> {
     public void setTime ( final Calendar time ) {
         this.time = time;
     }
-
 }

@@ -43,7 +43,6 @@ public class HCPEditPatientStepDefs {
 
     @Before
     public void setup () {
-
         driver = new HtmlUnitDriver( true );
         wait = new WebDriverWait( driver, 5 );
     }
@@ -64,7 +63,7 @@ public class HCPEditPatientStepDefs {
 
         // make sure the users we need to login exist
 
-        final Patient dbJim = Patient.getByName( "jbean" );
+        final Patient dbJim = Patient.getPatient( "jbean" );
         final Patient jbean = null == dbJim ? new Patient() : dbJim;
         jbean.setSelf( User.getByName( "jbean" ) );
         jbean.setFirstName( "Jim" );
@@ -90,7 +89,7 @@ public class HCPEditPatientStepDefs {
 
         // set Nellie Sanderson's demographics
 
-        final Patient dbNellie = Patient.getByName( "nsanderson" );
+        final Patient dbNellie = Patient.getPatient( "nsanderson" );
 
         final Patient nsanderson = null == dbNellie ? new Patient() : dbNellie;
         nsanderson.setSelf( User.getByName( "nsanderson" ) );

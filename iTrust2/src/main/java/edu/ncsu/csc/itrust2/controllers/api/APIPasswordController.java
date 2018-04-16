@@ -2,8 +2,6 @@ package edu.ncsu.csc.itrust2.controllers.api;
 
 import java.net.InetAddress;
 
-import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -64,22 +62,6 @@ public class APIPasswordController extends APIController {
                 user.save();
                 LoggerUtil.log( TransactionType.PASSWORD_UPDATE_SUCCESS, user.getUsername(),
                         "Successfully changed password for user " + user.getUsername() );
-
-                final String email = EmailUtil.getEmailByUsername( name );
-                if ( email != null ) {
-                    try {
-                        EmailUtil.sendEmail( email, "iTrust2: Password Changed",
-                                "Your password has been changed successfully" );
-                        LoggerUtil.log( TransactionType.CREATE_PW_CHANGE_EMAIL, name );
-                    }
-                    catch ( final MessagingException e ) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    LoggerUtil.log( TransactionType.CREATE_MISSING_EMAIL_LOG, name );
-                }
-
                 return new ResponseEntity( successResponse( "Password changed successfully" ), HttpStatus.OK );
             }
 
@@ -183,23 +165,6 @@ public class APIPasswordController extends APIController {
 
                 LoggerUtil.log( TransactionType.PASSWORD_UPDATE_SUCCESS, user.getUsername(),
                         "Successfully changed password for user " + user.getUsername() );
-
-                final String name = user.getUsername();
-                final String email = EmailUtil.getEmailByUsername( name );
-                if ( email != null ) {
-                    try {
-                        EmailUtil.sendEmail( email, "iTrust2: Password Changed",
-                                "Your password has been changed successfully" );
-                        LoggerUtil.log( TransactionType.CREATE_PW_CHANGE_EMAIL, name );
-                    }
-                    catch ( final MessagingException e ) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    LoggerUtil.log( TransactionType.CREATE_MISSING_EMAIL_LOG, name );
-                }
-
                 return new ResponseEntity( successResponse( "Passsword changed successfully" ), HttpStatus.OK );
             }
             LoggerUtil.log( TransactionType.PASSWORD_UPDATE_FAILURE, user.getUsername(),

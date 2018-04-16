@@ -114,7 +114,7 @@ public class PatientController {
         }
         else {
             // Delete the patient so that the cache has to refresh.
-            final Patient oldPatient = Patient.getByName( p.getSelf().getUsername() );
+            final Patient oldPatient = Patient.getPatient( p.getSelf().getUsername() );
             if ( oldPatient != null ) {
                 oldPatient.delete();
             }

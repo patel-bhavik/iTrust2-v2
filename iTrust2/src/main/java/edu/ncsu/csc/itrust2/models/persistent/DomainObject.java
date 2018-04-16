@@ -283,20 +283,4 @@ public abstract class DomainObject <D extends DomainObject<D>> {
         return Restrictions.eq( field, value );
     }
 
-    /**
-     * Creates a between-relation Criterion between the field and two values
-     * provided.
-     * 
-     * @param field
-     *            Field to check equivalence on
-     * @param lbound
-     *            Lower bound for the range
-     * @param ubound
-     *            Upper bound for the range
-     * @return Criterion created
-     */
-    protected static Criterion createBetween ( final String field, final Object lbound, final Object ubound ) {
-        return Restrictions.between( field, lbound, ubound );
-    }
-
 }

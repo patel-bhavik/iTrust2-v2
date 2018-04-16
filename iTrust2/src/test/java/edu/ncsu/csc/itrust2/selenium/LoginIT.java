@@ -2,8 +2,6 @@ package edu.ncsu.csc.itrust2.selenium;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.logging.Level;
-
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,10 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 public class LoginIT {
-
-    static {
-        java.util.logging.Logger.getLogger( "com.gargoylesoftware" ).setLevel( Level.OFF );
-    }
 
     private final WebDriver     driver   = new HtmlUnitDriver( true );
     private final String        baseUrl  = "http://localhost:8080/iTrust2";

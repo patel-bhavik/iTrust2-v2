@@ -3,8 +3,6 @@ package edu.ncsu.csc.itrust2.cucumber;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.logging.Level;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -17,9 +15,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class EditMyDemographicsStepDefs {
-    static {
-        java.util.logging.Logger.getLogger( "com.gargoylesoftware" ).setLevel( Level.OFF );
-    }
 
     private final WebDriver driver  = new HtmlUnitDriver( true );
     private final String    baseUrl = "http://localhost:8080/iTrust2";

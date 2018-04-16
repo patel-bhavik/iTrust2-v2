@@ -3,7 +3,6 @@ package edu.ncsu.csc.itrust2.config;
 import java.io.IOException;
 import java.util.Calendar;
 
-import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,11 +14,10 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import edu.ncsu.csc.itrust2.models.enums.TransactionType;
-import edu.ncsu.csc.itrust2.models.persistent.LoginAttempt;
 import edu.ncsu.csc.itrust2.models.persistent.LoginBan;
 import edu.ncsu.csc.itrust2.models.persistent.LoginLockout;
+import edu.ncsu.csc.itrust2.models.persistent.LoginAttempt;
 import edu.ncsu.csc.itrust2.models.persistent.User;
-import edu.ncsu.csc.itrust2.utils.EmailUtil;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
 /**
@@ -67,21 +65,6 @@ public class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
                     LoggerUtil.log( TransactionType.IP_LOCKOUT, addr, null, addr + " has been locked out for 1 hour." );
                     this.getRedirectStrategy().sendRedirect( request, response, "/login?iplocked" );
 
-                    final String name = username;
-                    final String email = EmailUtil.getEmailByUsername( name );
-                    if ( email != null ) {
-                        try {
-                            EmailUtil.sendEmail( email, "iTrust2: Your account has beeen locked out",
-                                    "Your iTrust2 account has been locked out due to too many failed log in attemtps." );
-                            LoggerUtil.log( TransactionType.CREATE_LOCKOUT_EMAIL, name );
-                        }
-                        catch ( final MessagingException e ) {
-                            e.printStackTrace();
-                        }
-                    }
-                    else {
-                        LoggerUtil.log( TransactionType.CREATE_MISSING_EMAIL_LOG, name );
-                    }
                 }
                 return;
             }
@@ -111,22 +94,6 @@ public class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
                         ban.save();
                         LoggerUtil.log( TransactionType.USER_BANNED, username, null, username + " has been banned." );
                         this.getRedirectStrategy().sendRedirect( request, response, "/login?banned" );
-
-                        final String name = username;
-                        final String email = EmailUtil.getEmailByUsername( name );
-                        if ( email != null ) {
-                            try {
-                                EmailUtil.sendEmail( email, "iTrust2: Your account has beeen locked out",
-                                        "Your iTrust2 account has been locked out due to too many failed log in attemtps." );
-                                LoggerUtil.log( TransactionType.CREATE_LOCKOUT_EMAIL, name );
-                            }
-                            catch ( final MessagingException e ) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            LoggerUtil.log( TransactionType.CREATE_MISSING_EMAIL_LOG, name );
-                        }
                     }
                     else {
                         // lockout user
@@ -137,22 +104,6 @@ public class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
                         LoggerUtil.log( TransactionType.USER_LOCKOUT, username, null,
                                 username + " has been locked out for 1 hour." );
                         this.getRedirectStrategy().sendRedirect( request, response, "/login?locked" );
-
-                        final String name = username;
-                        final String email = EmailUtil.getEmailByUsername( name );
-                        if ( email != null ) {
-                            try {
-                                EmailUtil.sendEmail( email, "iTrust2: Your account has beeen locked out",
-                                        "Your iTrust2 account has been locked out due to too many failed log in attemtps." );
-                                LoggerUtil.log( TransactionType.CREATE_LOCKOUT_EMAIL, name );
-                            }
-                            catch ( final MessagingException e ) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            LoggerUtil.log( TransactionType.CREATE_MISSING_EMAIL_LOG, name );
-                        }
                     }
                     return;
                 }

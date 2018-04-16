@@ -67,7 +67,7 @@ public class Patient extends DomainObject<Patient> implements Serializable {
      *            the username of the patient to get
      * @return the patient with the queried username
      */
-    public static Patient getByName ( final String username ) {
+    public static Patient getPatient ( final String username ) {
         try {
             return getWhere( createCriterionAsList( "self", User.getByNameAndRole( username, Role.ROLE_PATIENT ) ) )
                     .get( 0 );
@@ -99,7 +99,7 @@ public class Patient extends DomainObject<Patient> implements Serializable {
      * @return the corresponding patient record
      */
     public static Patient getPatient ( final User user ) {
-        return getByName( user.getUsername() );
+        return getPatient( user.getUsername() );
     }
 
     /**

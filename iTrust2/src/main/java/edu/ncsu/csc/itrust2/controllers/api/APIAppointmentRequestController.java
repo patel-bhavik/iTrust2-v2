@@ -2,8 +2,6 @@ package edu.ncsu.csc.itrust2.controllers.api;
 
 import java.util.List;
 
-import javax.mail.MessagingException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +16,6 @@ import edu.ncsu.csc.itrust2.forms.patient.AppointmentRequestForm;
 import edu.ncsu.csc.itrust2.models.enums.TransactionType;
 import edu.ncsu.csc.itrust2.models.persistent.AppointmentRequest;
 import edu.ncsu.csc.itrust2.models.persistent.DomainObject;
-import edu.ncsu.csc.itrust2.utils.EmailUtil;
 import edu.ncsu.csc.itrust2.utils.LoggerUtil;
 
 /**
@@ -159,25 +156,6 @@ public class APIAppointmentRequestController extends APIController {
 
             request.save();
             LoggerUtil.log( TransactionType.APPOINTMENT_REQUEST_UPDATED, request.getPatient(), request.getHcp() );
-
-            if ( dbRequest.getStatus() != request.getStatus() ) {
-                final String name = request.getPatient().getUsername();
-                final String email = EmailUtil.getEmailByUsername( name );
-                if ( email != null ) {
-                    try {
-                        EmailUtil.sendEmail( email, "iTrust2: Appointment Status Updated",
-                                "The status of one of your appointments has been updated." );
-                        LoggerUtil.log( TransactionType.CREATE_APPOINTMENT_REQUEST_EMAIL, name );
-                    }
-                    catch ( final MessagingException e ) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    LoggerUtil.log( TransactionType.CREATE_MISSING_EMAIL_LOG, name );
-                }
-            }
-
             return new ResponseEntity( request, HttpStatus.OK );
         }
         catch ( final Exception e ) {
